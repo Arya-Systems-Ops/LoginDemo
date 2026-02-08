@@ -3,35 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', 'Laravel') }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>LoginDemo</title>
+    <!-- Bootstrap CSS -->
+    <link href="[https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css)" rel="stylesheet">
 </head>
 <body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">Mein Projekt</a>
-            
-            <div class="navbar-nav ms-auto">
-                @guest
-                    <a class="nav-link" href="{{ route('login') }}">Login</a>
-                    <a class="nav-link" href="{{ route('register') }}">Registrieren</a>
-                @else
-                    <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-link nav-link" style="display: inline; cursor: pointer;">
-                            Abmelden
-                        </button>
-                    </form>
-                @endguest
-            </div>
-        </div>
-    </nav>
+    <div id="app">
+        <!-- Hier wird der Inhalt aus login.blade oder register.blade eingefügt -->
+        <main class="py-4">
+            @yield('content')
+        </main>
+    </div>
 
-    <main class="container">
-        @yield('content')
-    </main>
-
+    <!-- Bootstrap JS -->
+    <script src="[https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js)"></script>
 </body>
 </html>
