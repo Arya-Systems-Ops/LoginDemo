@@ -1,21 +1,22 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
 
-Route::view('/', 'welcome');
-
-Route::middleware('guest')->group(function () {
-    
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LoginController::class, 'login']);
-    
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-    Route::post('/register', [RegisterController::class, 'store']);
+// Startseite: Wer hier landet, wird direkt zum Login geschickt
+Route::get('/', function () {
+    return redirect()->route('login');
 });
 
+// Diese Routen sind nur für Leute, die noch NICHT eingeloggt sind (Gäste)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
+// Dieser Bereich ist sicher – nur wer angemeldet ist, kommt hier rein
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-    Route::view('/dashboard', 'welcome')->name('dashboard');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
