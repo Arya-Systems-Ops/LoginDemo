@@ -4,35 +4,28 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class LoginRequest extends FormRequest // KORREKTUR: Muss LoginRequest heißen!
 {
-    
-    //Hier lassen wir erst mal jeden durch, da ja jeder zum Login-Formular kommen muss.
-    
     public function authorize(): bool
     {
         return true;
     }
-
-
-    //Hier lege ich die Regeln fest: E-Mail muss gültig sein und das Passwort darf nicht fehlen.
-
-     public function rules(): array
+    
+    public function rules(): array
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required|string',
+            'email'    => 'required|email:filter', // E-Mail-Anforderung
+            'password' => 'required|string|min:8', // 8-Zeichen-Anforderung
         ];
     }
 
-    //Das sind die Texte, die der User sieht, wenn er beim Tippen mal was vergisst.
-
-    public function messages(): array
+    public function messages(): array   
     {
         return [
-            'email.required' => 'Ich brauche deine E-Mail-Adresse für die Anmeldung.',
-            'email.email' => 'Das ist keine gültige E-Mail-Adresse. Bitte überprüfe sie noch mal.',
-            'password.required' => 'Gib bitte dein Passwort ein.',
+            'email.required'    => 'Wir benötigen deine E-Mail-Adresse für den Login.',
+            'email.email'       => 'Bitte gib eine gültige E-Mail-Adresse ein.',
+            'password.required' => 'Das Passwort-Feld darf nicht leer sein.',
+            'password.min'      => 'Dein Passwort muss aus Sicherheitsgründen mindestens 8 Zeichen lang sein.',
         ];
     }
 }
