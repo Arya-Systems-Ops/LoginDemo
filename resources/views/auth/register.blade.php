@@ -40,19 +40,32 @@
                                    id="email" 
                                    class="form-control @error('email') is-invalid @enderror" 
                                    placeholder="name@beispiel.de"
+                                   value="{{ old('email') }}"
                                    required>
+                            @error('email')
+                        
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                            <small class="form-text text-muted">format: name@domain.de</small>
                         </div>
 
                         <!-- Eingabegruppe: Passwort -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label font-weight-bold">Passwort wählen</label>
-                            <!-- WICHTIG: name="password" muss so bleiben -->
-                            <input type="password" 
-                                   name="password" 
-                                   id="password" 
-                                   class="form-control @error('password') is-invalid @enderror" 
-                                   required>
-                        </div>
+                       <div class="mb-3">
+                                <label for="password" class="form-label fw-bold">Passwort</label>
+                                <input type="password" 
+                                    name="password" 
+                                    id="password" 
+                                    class="form-control @error('password') is-invalid @enderror" 
+                                    required>
+                                @error('password')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                                <small class="form-text text-muted">Mindestens 8 Zeichen</small>
+                            </div>
 
                         <!-- Eingabegruppe: Passwort-Bestätigung -->
                         <div class="mb-4">
