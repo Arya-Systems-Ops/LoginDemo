@@ -15,7 +15,7 @@
                 <div class="card-body p-4">
                     
                     <!-- LOGIK-KERN: Die Attribute 'method', 'action' und '@csrf' sind Pflicht! -->
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('register') }}"novalidate>
                         @csrf
 
                         <!-- Eingabegruppe: Name -->
@@ -27,6 +27,7 @@
                                    id="name" 
                                    class="form-control @error('name') is-invalid @enderror" 
                                    placeholder="Max Mustermann"
+                                   Value="{{ old('name') }}"
                                    required 
                                    autofocus>
                         </div>
