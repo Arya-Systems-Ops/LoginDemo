@@ -8,34 +8,34 @@
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-dark text-white p-3 text-center">
                     <h4 class="mb-0">Anmelden</h4>
-                </div>
+                        <form method="POST" action="{{ route('login') }}" novalidate>
+                            @csrf
 
-                <div class="card-body p-4">
-                    <!-- Formular sendet Daten per POST an die Login-Route -->
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+                            <div class="mb-3">
+                                <label for="email" class="form-label">E-Mail-Adresse</label>
+                                <input type="email" 
+                                    name="email" 
+                                    id="email" 
+                                    class="form-control @error('email') is-invalid @enderror" 
+                                    value="{{ old('email') }}">
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                        <!-- E-Mail Feld -->
-                        <div class="mb-3">
-                            <label for="email" class="form-label fw-bold">E-Mail-Adresse</label>
-                            <input type="email" 
-                                   name="email" 
-                                   id="email" 
-                                   class="form-control @error('email') is-invalid @enderror" 
-                                   required 
-                                   autofocus>
-                        </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Passwort</label>
+                                <input type="password" 
+                                    name="password" 
+                                    id="password" 
+                                    class="form-control @error('password') is-invalid @enderror">
+                                @error('password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                        <!-- Passwort Feld -->
-                        <div class="mb-4">
-                            <label for="password" class="form-label fw-bold">Passwort</label>
-                            <input type="password" 
-                                   name="password" 
-                                   id="password" 
-                                   class="form-control" 
-                                   required>
-                        </div>
-
+                            <button type="submit" class="btn btn-primary">Anmelden</button>
+                        </form>
                         <!-- Login Button -->
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg">
