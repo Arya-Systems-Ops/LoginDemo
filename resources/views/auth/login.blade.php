@@ -11,11 +11,11 @@
                 </div>
 
                 <div class="card-body p-4">
-                    <!-- LOGIK: action muss auf die Login-Route zeigen -->
+                    <!-- Formular sendet Daten per POST an die Login-Route -->
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <!-- E-Mail -->
+                        <!-- E-Mail Feld -->
                         <div class="mb-3">
                             <label for="email" class="form-label fw-bold">E-Mail-Adresse</label>
                             <input type="email" 
@@ -26,7 +26,7 @@
                                    autofocus>
                         </div>
 
-                        <!-- Passwort -->
+                        <!-- Passwort Feld -->
                         <div class="mb-4">
                             <label for="password" class="form-label fw-bold">Passwort</label>
                             <input type="password" 
@@ -36,6 +36,7 @@
                                    required>
                         </div>
 
+                        <!-- Login Button -->
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg">
                                 Einloggen
@@ -44,26 +45,27 @@
                     </form>
                 </div>
                 
-                    <div class="card-footer bg-light text-center py-3">
-                        <p class="mb-0 text-muted">
-                            Noch kein Konto? <a href="{{ route('register') }}" class="text-primary text-decoration-none fw-bold">Jetzt registrieren</a>
-                        </p>
-                    </div>
+                <!-- Link zur Registrierung -->
+                <div class="card-footer bg-light text-center py-3">
+                    <p class="mb-0 text-muted">
+                        Noch kein Konto? <a href="{{ route('register') }}" class="text-primary text-decoration-none fw-bold">Jetzt registrieren</a>
+                    </p>
                 </div>
-
-                <!-- KORREKTUR: Der Fehler-Block -->
-                @if ($errors->any())
-                    <div class="alert alert-danger mt-4 shadow-sm">
-                        <h5 class="alert-heading">Fehler!</h5>
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif <!-- Das @endif gehört ganz nach unten -->
-
             </div>
+
+            <!-- Fehlermeldungen anzeigen, falls Login fehlschlägt -->
+            @if ($errors->any())
+                <div class="alert alert-danger mt-4 shadow-sm">
+                    <h5 class="alert-heading">Da ist was schiefgelaufen!</h5>
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif 
+
         </div>
     </div>
+</div>
 @endsection
