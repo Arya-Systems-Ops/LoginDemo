@@ -6,7 +6,9 @@ namespace App\Http\Controllers; // Sagt Laravel, wo die Datei im Projekt liegt
 use App\Http\Requests\LoginRequest; // Türsteher für den Login
 use Illuminate\Http\Request;        // Für Standard-Anfragen
 use Illuminate\Support\Facades\Auth; // Das Werkzeug für die Anmeldung
-
+use App\Http\Requests\RegisterRequest; // Türsteher für die Registrierung
+use App\Models\User; // Das User-Modell, um neue Benutzer zu erstellen
+use Illuminate\Support\Facades\Hash; // Werkzeug zum sicheren Verschlüsseln von Passwörtern
 
 
 class AuthController extends Controller
