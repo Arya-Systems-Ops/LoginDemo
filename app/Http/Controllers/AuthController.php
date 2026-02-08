@@ -42,4 +42,24 @@ class AuthController extends Controller
     {
         return view('auth.register');
     }
+    public  function register(RegisterRequest $request)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), // Passwort verschlüsseln
+        ]);
+        Auth::login($user); // Automatisch einloggen nach Registrierung
+        return redirect('/home'); // Weiterleitung zum Home-Bereich
+
+    }
+
+        // --- SCHRITT 6: LOGOUT ---
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/login');
+    }
 }
