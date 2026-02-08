@@ -38,4 +38,8 @@ class AuthController extends Controller
         ])->onlyInput('email'); // Damit bleibt die E-Mail im Formular, aber das Passwort wird gelöscht (wegen Sicherheit).
 
     }
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
 }
