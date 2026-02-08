@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest // KORREKTUR: Muss LoginRequest heißen!
     {
         return [
             'email.required'    => 'Wir benötigen deine E-Mail-Adresse für den Login.',
-            'email.email'       => 'Bitte gib eine gültige E-Mail-Adresse ein.',
+            'email.email'       => 'Die E-Mail-Adresse ist ungültig. Sie muss ein @ und eine Domain enthalten (z.B. test@example.de).',
             'password.required' => 'Das Passwort-Feld darf nicht leer sein.',
             'password.min'      => 'Dein Passwort muss aus Sicherheitsgründen mindestens 8 Zeichen lang sein.',
         ];
