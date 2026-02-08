@@ -44,14 +44,26 @@
                     </form>
                 </div>
                 
-                <div class="card-footer bg-light text-center py-3">
-                    <p class="mb-0 text-muted">
-                        Noch kein Konto? <a href="{{ route('register') }}" class="text-primary text-decoration-none fw-bold">Jetzt registrieren</a>
-                    </p>
+                    <div class="card-footer bg-light text-center py-3">
+                        <p class="mb-0 text-muted">
+                            Noch kein Konto? <a href="{{ route('register') }}" class="text-primary text-decoration-none fw-bold">Jetzt registrieren</a>
+                        </p>
+                    </div>
                 </div>
-            </div>
 
+                <!-- KORREKTUR: Der Fehler-Block -->
+                @if ($errors->any())
+                    <div class="alert alert-danger mt-4 shadow-sm">
+                        <h5 class="alert-heading">Fehler!</h5>
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif <!-- Das @endif gehört ganz nach unten -->
+
+            </div>
         </div>
     </div>
-</div>
 @endsection
