@@ -1,59 +1,144 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+#!/bin/bash
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Ermittle den aktuellen Git-Branch
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-## About Laravel
+echo "Aktueller Branch: $BRANCH"
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+if [ "$BRANCH" == "docker-version" ]; then
+    echo "Erstelle README für Docker-Version..."
+    cat <<EOF > README.md
+# LoginDemo - Laravel & Docker Projekt
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Dieses Projekt wurde als Bearbeitung einer praktischen Programmieraufgabe für meine Bewerbung zur betrieblichen Praxisphase erstellt. Es umfasst die Entwicklung eines vollständigen Authentifizierungssystems auf Basis von Laravel.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Die Aufgabenstellung im Überblick:
+- **Setup:** Erstellung eines neuen Laravel-Projekts ("LoginDemo") in einer lokalen Entwicklungsumgebung (Docker).
+- **Datenbank:** SQL-Datenbank \`login_demo\` mittels Laravel Migrations.
+- **Features:** Umsetzung von Login- und Registrierungs-Funktionalität inklusive Logik im Controller.
+- **Validierung:** Nutzung von Form-Request-Validation (E-Mail/Passwort).
+- **Sicherheit:** Schutz der Willkommensseite durch Middleware für angemeldete Nutzer.
+- **Design:** Benutzerfreundliche Darstellung mit Bootstrap/Tailwind.
 
-## Learning Laravel
+**Besonderer Fokus:** Ich habe das Projekt so vorbereitet, dass der Einstieg für den Benutzer extrem einfach ist. Die Konfigurationsdateien sind bereits so eingestellt, dass man direkt loslegen kann.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Entwicklungsprozess
+Die Entwicklung erfolgte hybrid, um eine effiziente Bereitstellung zu gewährleisten:
+1. **Prototyping:** Schnelle Umsetzung der Kernlogik unter Laravel Herd (Windows).
+2. **Isolierung:** Migration in eine Docker-Umgebung (Laravel Sail) zur Sicherstellung der Versionskompatibilität (insbesondere MySQL 8.4).
+3. **Laufzeit:** Validierung der Container-Struktur innerhalb einer WSL2-Umgebung (Ubuntu).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Voraussetzungen
+Bevor Sie starten, stellen Sie bitte sicher, dass folgende Software installiert ist:
+- **Docker Desktop** (muss gestartet sein)
+- **WSL2** (Linux Terminal)
+- **Git**
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Schritt-für-Schritt Anleitung
 
-### Premium Partners
+### 1. Repository klonen & vorbereiten
+\`\`\`bash
+git clone -b docker-version https://github.com/Arya-Systems-Ops/LoginDemo.git
+cd LoginDemo
+cp .env.example .env
+\`\`\`
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 2. Composer Abhängigkeiten installieren
+\`\`\`bash
+docker run --rm \\
+    -u "\$(id -u):\$(id -g)" \\
+    -v "\$(pwd):/var/www/html" \\
+    -w /var/www/html \\
+    laravelsail/php84-composer:latest \\
+    composer install --ignore-platform-reqs
+\`\`\`
 
-## Contributing
+### 3. Container starten & Initialisieren
+\`\`\`bash
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate --seed
+\`\`\`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Testen & Login
+Die Anwendung ist erreichbar unter: **http://localhost**
 
-## Code of Conduct
+**Test-Account:**
+| Feld | Wert |
+| :--- | :--- |
+| **E-Mail** | \`test@example.com\` |
+| **Passwort** | \`password123\` |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
+**Autor:** Arya-Systems-Ops
+*Umschüler zum Fachinformatiker für Anwendungsentwicklung*
+EOF
 
-## Security Vulnerabilities
+else
+    echo "Erstelle README für Native-Version (main)..."
+    cat <<EOF > README.md
+# LoginDemo (Native Environment)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Dieses Projekt ist die Basis-Version des Authentifizierungssystems, entwickelt in einer nativen Entwicklungsumgebung mit **Laravel Herd**. Es dient als technischer Nachweis für die Umsetzung eines Login- und Registrierungssystems im Rahmen meiner Bewerbung für die betriebliche Praxisphase.
 
-## License
+## Technische Spezifikationen
+* **Framework:** Laravel 11.x
+* **Umgebung:** Laravel Herd (empfohlen) / PHP 8.4
+* **Datenbank:** MySQL (lokal)
+* **Frontend:** Bootstrap 5
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+> **Hinweis:** Dies ist der \`main\`-Branch für die native Ausführung. Für die isolierte Docker-Version wechseln Sie bitte in den Branch \`docker-version\`.
+
+## Entwicklungsprozess
+1. **Setup:** Initialisierung über Laravel Herd für schnelle native Entwicklung.
+2. **Datenbank:** Lokale MySQL-Instanz.
+3. **Validierung:** Form-Requests zur Absicherung der Daten.
+
+## Installation & Setup (Lokal)
+Voraussetzungen: **Laravel Herd**, **Node.js** und **MySQL**.
+
+### 1. Repository klonen
+\`\`\`bash
+git clone https://github.com/Arya-Systems-Ops/LoginDemo.git
+cd LoginDemo
+\`\`\`
+
+### 2. Konfiguration
+\`\`\`bash
+cp .env.example .env
+\`\`\`
+
+### 3. Installation
+\`\`\`bash
+composer install
+php artisan key:generate
+php artisan migrate --seed
+npm install
+npm run build
+\`\`\`
+
+## Zugriff & Test-Daten
+Erreichbar unter der Herd-URL oder via:
+\`\`\`bash
+php artisan serve
+\`\`\`
+URL: **http://127.0.0.1:8000**
+
+**Test-Account:**
+- **E-Mail:** \`test@example.com\`
+- **Passwort:** \`password123\`
+
+---
+**Autor:** Arya-Systems-Ops
+*Umschüler zum Fachinformatiker für Anwendungsentwicklung*
+EOF
+fi
+
+echo "README.md wurde erfolgreich aktualisiert!"
+
+# Optional: Automatisch commiten
+# git add README.md
+# git commit -m "docs: README.md via Skript aktualisiert"
+# git push origin \$BRANCH
