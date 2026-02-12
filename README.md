@@ -25,7 +25,9 @@ Voraussetzungen: Laravel Herd, Node.js und Composer lokal installiert.
 ### 1. Repository vorbereiten
 
 git clone https://github.com/Arya-Systems-Ops/LoginDemo.git
+
 cd LoginDemo
+
 cp .env.example .env
 
 ### 2. Abhängigkeiten installieren
