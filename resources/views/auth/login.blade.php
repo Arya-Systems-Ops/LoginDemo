@@ -1,64 +1,29 @@
-@extends('layouts.app')
+<!-- In den <head> Bereich, falls noch nicht drin -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-@section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            
-            <div class="card shadow-sm border-0">
-                <!-- 1. Dunkler Header (wie bei Register) -->
-                <div class="card-header bg-dark text-white p-3 text-center">
-                    <h4 class="mb-0">Anmelden</h4>
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
+    <div class="card shadow-lg border-0" style="width: 100%; max-width: 400px; border-radius: 15px;">
+        <div class="card-header bg-dark text-white text-center py-3" style="border-radius: 15px 15px 0 0;">
+            <h4 class="mb-0">Willkommen zurück</h4>
+        </div>
+        <div class="card-body p-4">
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-muted">E-Mail-Adresse</label>
+                    <input type="email" name="email" class="form-control form-control-lg @error('email') is-invalid @enderror" placeholder="name@beispiel.de" required>
+                    @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
-
-                <!-- 2. Weißer Body für die Eingabefelder -->
-                <div class="card-body p-4">
-                    <form method="POST" action="{{ route('login') }}" novalidate>
-                        @csrf
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label">E-Mail-Adresse</label>
-                            <input type="email" 
-                                name="email" 
-                                id="email" 
-                                class="form-control @error('email') is-invalid @enderror" 
-                                value="{{ old('email') }}"
-                                placeholder="name@beispiel.de">
-                            @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Passwort</label>
-                            <input type="password" 
-                                name="password" 
-                                id="password" 
-                                class="form-control @error('password') is-invalid @enderror"
-                                placeholder="Passwort eingeben">
-                            @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Nur EIN großer blauer Button -->
-                        <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                Einloggen
-                            </button>
-                        </div>
-                    </form>
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Passwort</label>
+                    <input type="password" name="password" class="form-control form-control-lg shadow-sm">
                 </div>
-                
-                <!-- 3. Heller Footer für den Link -->
-                <div class="card-footer bg-light text-center py-3 border-0">
-                    <p class="mb-0 text-muted">
-                        Noch kein Konto? <a href="{{ route('register') }}" class="text-primary text-decoration-none fw-bold">Jetzt registrieren</a>
-                    </p>
-                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm mb-3">Einloggen</button>
+            </form>
+            <div class="text-center">
+                <span class="text-muted small">Noch kein Konto?</span> 
+                <a href="{{ route('register') }}" class="text-decoration-none small fw-bold">Jetzt registrieren</a>
             </div>
-
         </div>
     </div>
 </div>
-@endsection
