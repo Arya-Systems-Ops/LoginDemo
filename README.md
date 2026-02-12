@@ -1,144 +1,63 @@
-#!/bin/bash
+# LoginDemo
 
-# Ermittle den aktuellen Git-Branch
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
-
-echo "Aktueller Branch: $BRANCH"
-
-if [ "$BRANCH" == "docker-version" ]; then
-    echo "Erstelle README für Docker-Version..."
-    cat <<EOF > README.md
-# LoginDemo - Laravel & Docker Projekt
-
-Dieses Projekt wurde als Bearbeitung einer praktischen Programmieraufgabe für meine Bewerbung zur betrieblichen Praxisphase erstellt. Es umfasst die Entwicklung eines vollständigen Authentifizierungssystems auf Basis von Laravel.
-
-### Die Aufgabenstellung im Überblick:
-- **Setup:** Erstellung eines neuen Laravel-Projekts ("LoginDemo") in einer lokalen Entwicklungsumgebung (Docker).
-- **Datenbank:** SQL-Datenbank \`login_demo\` mittels Laravel Migrations.
-- **Features:** Umsetzung von Login- und Registrierungs-Funktionalität inklusive Logik im Controller.
-- **Validierung:** Nutzung von Form-Request-Validation (E-Mail/Passwort).
-- **Sicherheit:** Schutz der Willkommensseite durch Middleware für angemeldete Nutzer.
-- **Design:** Benutzerfreundliche Darstellung mit Bootstrap/Tailwind.
-
-**Besonderer Fokus:** Ich habe das Projekt so vorbereitet, dass der Einstieg für den Benutzer extrem einfach ist. Die Konfigurationsdateien sind bereits so eingestellt, dass man direkt loslegen kann.
-
-## Entwicklungsprozess
-Die Entwicklung erfolgte hybrid, um eine effiziente Bereitstellung zu gewährleisten:
-1. **Prototyping:** Schnelle Umsetzung der Kernlogik unter Laravel Herd (Windows).
-2. **Isolierung:** Migration in eine Docker-Umgebung (Laravel Sail) zur Sicherstellung der Versionskompatibilität (insbesondere MySQL 8.4).
-3. **Laufzeit:** Validierung der Container-Struktur innerhalb einer WSL2-Umgebung (Ubuntu).
-
-## Voraussetzungen
-Bevor Sie starten, stellen Sie bitte sicher, dass folgende Software installiert ist:
-- **Docker Desktop** (muss gestartet sein)
-- **WSL2** (Linux Terminal)
-- **Git**
-
----
-
-## Schritt-für-Schritt Anleitung
-
-### 1. Repository klonen & vorbereiten
-\`\`\`bash
-git clone -b docker-version https://github.com/Arya-Systems-Ops/LoginDemo.git
-cd LoginDemo
-cp .env.example .env
-\`\`\`
-
-### 2. Composer Abhängigkeiten installieren
-\`\`\`bash
-docker run --rm \\
-    -u "\$(id -u):\$(id -g)" \\
-    -v "\$(pwd):/var/www/html" \\
-    -w /var/www/html \\
-    laravelsail/php84-composer:latest \\
-    composer install --ignore-platform-reqs
-\`\`\`
-
-### 3. Container starten & Initialisieren
-\`\`\`bash
-./vendor/bin/sail up -d
-./vendor/bin/sail artisan key:generate
-./vendor/bin/sail artisan migrate --seed
-\`\`\`
-
-## Testen & Login
-Die Anwendung ist erreichbar unter: **http://localhost**
-
-**Test-Account:**
-| Feld | Wert |
-| :--- | :--- |
-| **E-Mail** | \`test@example.com\` |
-| **Passwort** | \`password123\` |
-
----
-**Autor:** Arya-Systems-Ops
-*Umschüler zum Fachinformatiker für Anwendungsentwicklung*
-EOF
-
-else
-    echo "Erstelle README für Native-Version (main)..."
-    cat <<EOF > README.md
-# LoginDemo (Native Environment)
-
-Dieses Projekt ist die Basis-Version des Authentifizierungssystems, entwickelt in einer nativen Entwicklungsumgebung mit **Laravel Herd**. Es dient als technischer Nachweis für die Umsetzung eines Login- und Registrierungssystems im Rahmen meiner Bewerbung für die betriebliche Praxisphase.
+Ein Laravel-basiertes Authentifizierungssystem, entwickelt als technische Programmieraufgabe im Rahmen einer Bewerbung für die betriebliche Praxisphase. Diese Version ist für die native Ausführung mit Laravel Herd optimiert, um eine schnelle und bequeme Einrichtung zu ermöglichen.
 
 ## Technische Spezifikationen
-* **Framework:** Laravel 11.x
-* **Umgebung:** Laravel Herd (empfohlen) / PHP 8.4
-* **Datenbank:** MySQL (lokal)
-* **Frontend:** Bootstrap 5
 
-> **Hinweis:** Dies ist der \`main\`-Branch für die native Ausführung. Für die isolierte Docker-Version wechseln Sie bitte in den Branch \`docker-version\`.
+* Framework: Laravel 11.x
+* Laufzeit: PHP 8.4 (via Laravel Herd)
+* Datenbank: MySQL (lokal oder via Herd Services)
+* Frontend: Bootstrap 5
+* Architektur: MVC-Muster mit Form-Request-Validation und Middleware-Integration
 
 ## Entwicklungsprozess
-1. **Setup:** Initialisierung über Laravel Herd für schnelle native Entwicklung.
-2. **Datenbank:** Lokale MySQL-Instanz.
-3. **Validierung:** Form-Requests zur Absicherung der Daten.
 
-## Installation & Setup (Lokal)
-Voraussetzungen: **Laravel Herd**, **Node.js** und **MySQL**.
+Der Fokus bei dieser Version lag auf einer effizienten und unkomplizierten Entwicklung:
 
-### 1. Repository klonen
-\`\`\`bash
+* Bequemlichkeit: Nutzung von Laravel Herd für ein Zero-Config Setup der PHP-Umgebung.
+* Prototyping: Direkte Umsetzung der Logik ohne Container-Verwaltung.
+* Native Tools: Verwendung der lokalen CLI für Composer und Artisan-Befehle.
+
+## Installation und Local Setup
+
+Voraussetzungen: Laravel Herd, Node.js und Composer lokal installiert.
+
+### 1. Repository vorbereiten
+
 git clone https://github.com/Arya-Systems-Ops/LoginDemo.git
 cd LoginDemo
-\`\`\`
-
-### 2. Konfiguration
-\`\`\`bash
 cp .env.example .env
-\`\`\`
 
-### 3. Installation
-\`\`\`bash
+### 2. Abhängigkeiten installieren
+
+Da Herd die PHP-Umgebung stellt, werden die Pakete direkt lokal installiert:
+
 composer install
-php artisan key:generate
-php artisan migrate --seed
 npm install
 npm run build
-\`\`\`
 
-## Zugriff & Test-Daten
-Erreichbar unter der Herd-URL oder via:
-\`\`\`bash
-php artisan serve
-\`\`\`
-URL: **http://127.0.0.1:8000**
+### 3. Umgebung initialisieren
 
-**Test-Account:**
-- **E-Mail:** \`test@example.com\`
-- **Passwort:** \`password123\`
+Erstelle eine leere Datenbank (z. B. via TablePlus oder Herd Services) und passe die Zugangsdaten in der .env an. Danach:
+
+php artisan key:generate
+php artisan migrate --seed
+
+### 4. Browser-Aufruf
+
+Das Projekt ist durch Herd automatisch unter der lokalen Domain erreichbar:
+http://logindemo.test (oder dem Namen deines Projektordners).
+
+## Test-Zugang
+
+Für die erste Prüfung wurde ein Test-Account über den Database-Seeder angelegt:
+
+| Feld | Wert |
+| :--- | :--- |
+| E-Mail | test@example.com |
+| Passwort | password123 |
 
 ---
-**Autor:** Arya-Systems-Ops
-*Umschüler zum Fachinformatiker für Anwendungsentwicklung*
-EOF
-fi
 
-echo "README.md wurde erfolgreich aktualisiert!"
-
-# Optional: Automatisch commiten
-# git add README.md
-# git commit -m "docs: README.md via Skript aktualisiert"
-# git push origin \$BRANCH
+Autor: Arya-Systems-Ops
+Umschüler zum Fachinformatiker für Anwendungsentwicklung
